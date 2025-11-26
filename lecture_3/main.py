@@ -38,6 +38,7 @@ def get_student_by_name(student_name: str) -> Optional[StudentType]:
     for student in students:
         if student_name.casefold() == student["name"].casefold():
             return student
+
     return None
 
 
@@ -48,10 +49,12 @@ def calculate_average(student: StudentType) -> Optional[float]:
     If the student has no grades, it returns None.
     """
     student_grades: List[int] = student["grades"]
+
     try:
         average_grade: float = sum(student_grades) / len(student_grades)
     except ZeroDivisionError:
         return None
+
     return average_grade
 
 
@@ -126,6 +129,7 @@ def add_grade() -> None:
     if check_student_in_list(student_name):
         while True:
             student_grade_str: str = get_student_grade()
+
             if student_grade_str.lower() == "done":
                 break
             else:
@@ -152,6 +156,7 @@ def show_report() -> None:
     average_list: List[float] = []
 
     print(f"--- Student Report ---")
+
     if not students:
         print("No students.")
         return
@@ -166,17 +171,11 @@ def show_report() -> None:
 
         print(f"{student['name']}'s average grade is {average_value}.")
 
-    average_list_nums: List[float] = [
-        number for number in average_list if isinstance(number, (int, float))
-    ]
-
-    if not average_list_nums:
-        return
-
-    print(f"--------------------------")
-    print(f"Max Average: {max(average_list_nums)}")
-    print(f"Min Average: {min(average_list_nums)}")
-    print(f"Overall Average: {sum(average_list_nums)/len(average_list_nums)}")
+    if average_list:
+        print(f"--------------------------")
+        print(f"Max Average: {max(average_list)}")
+        print(f"Min Average: {min(average_list)}")
+        print(f"Overall Average: {sum(average_list)/len(average_list)}")
 
 
 def top_performer() -> None:
