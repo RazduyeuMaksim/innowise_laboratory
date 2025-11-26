@@ -29,7 +29,7 @@ def check_student_in_list(student_name: str) -> bool:
     )
 
 
-def get_student_by_name(student_name: str) -> Optional[dict]:
+def get_student_by_name(student_name: str) -> Optional[StudentType]:
     """
     Function searches for a student in the list by name
     and returns the student's data as a dictionary if found,
@@ -41,15 +41,15 @@ def get_student_by_name(student_name: str) -> Optional[dict]:
     return None
 
 
-def calculate_average(student: dict) -> Optional[float]:
+def calculate_average(student: StudentType) -> Optional[float]:
     """
     Function takes a student dictionary
     and calculates the average grade.
     If the student has no grades, it returns None.
     """
-    student_grades = student["grades"]
+    student_grades: List[int] = student["grades"]
     try:
-        average_grade = sum(student_grades) / len(student_grades)
+        average_grade: float = sum(student_grades) / len(student_grades)
     except ZeroDivisionError:
         return None
     return average_grade
@@ -83,7 +83,7 @@ def check_student_grade(student_grade_str: str) -> Optional[int]:
     If everything is valid, it returns the grade as an integer.
     """
     try:
-        student_grade = int(student_grade_str)
+        student_grade: int = int(student_grade_str)
     except ValueError:
         print("Invalid input. Please enter a number.")
         return None
@@ -103,12 +103,12 @@ def add_student() -> None:
     and an empty grades list,
     then appends it to the main students list.
     """
-    student_name = get_student_name()
+    student_name: str = get_student_name()
 
     if not check_student_name(student_name):
         return
 
-    student_dict = {"name": student_name, "grades": []}
+    student_dict: StudentType = {"name": student_name, "grades": []}
 
     students.append(student_dict)
 
@@ -121,21 +121,21 @@ def add_grade() -> None:
     Each valid grade is appended to the student's grade list.
     If the student is not found, a message is displayed.
     """
-    student_name = get_student_name()
+    student_name: str = get_student_name()
 
     if check_student_in_list(student_name):
         while True:
-            student_grade_str = get_student_grade()
+            student_grade_str: str = get_student_grade()
             if student_grade_str.lower() == "done":
                 break
             else:
-                student_grade = check_student_grade(student_grade_str)
+                student_grade: Optional[int] = check_student_grade(student_grade_str)
 
                 if student_grade is None:
                     continue
 
-                student = get_student_by_name(student_name)
-                student_grades = student["grades"]
+                student: Optional[StudentType] = get_student_by_name(student_name)
+                student_grades: List[int] = student["grades"]
                 student_grades.append(student_grade)
     else:
         print(f"Student {student_name} not found.")
@@ -157,16 +157,16 @@ def show_report() -> None:
         return
 
     for student in students:
-        average_value = calculate_average(student)
+        average_value: Optional[float] = calculate_average(student)
 
         if average_value is not None:
             average_list.append(round(average_value, 2))
         else:
-            average_value = "N/A"
+            average_value: str = "N/A"
 
         print(f"{student['name']}'s average grade is {average_value}.")
 
-    average_list_nums = [
+    average_list_nums: List[float] = [
         number for number in average_list if isinstance(number, (int, float))
     ]
 
@@ -189,7 +189,7 @@ def top_performer() -> None:
         print(f"No students.")
         return
 
-    student_with_grades = list(
+    student_with_grades: List[StudentType] = list(
         filter(lambda student: calculate_average(student) is not None, students)
     )
 
@@ -197,7 +197,7 @@ def top_performer() -> None:
         print("No students with valid grades to determine a top performer")
         return
 
-    top_student = max(
+    top_student: StudentType = max(
         student_with_grades, key=lambda student: calculate_average(student)
     )
 
@@ -276,7 +276,7 @@ def main() -> None:
     while True:
         try:
             display_menu()
-            user_choice = check_user_choice(get_user_choice())
+            user_choice: Optional[int] = check_user_choice(get_user_choice())
             if user_choice is not None:
                 if not handle_command(user_choice):
                     break
