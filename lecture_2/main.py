@@ -13,6 +13,8 @@ def generate_profile(age: int) -> str:
         return "Teenager"
     elif age >= 20:
         return "Adult"
+    else:
+        return "Unknown"
 
 
 def get_user_full_name() -> str:
@@ -69,7 +71,7 @@ def generate_user_profile(
     """
     Creates a dictionary representing a user profile.
     """
-    user_profile: Dict[str, any] = {
+    user_profile: Dict[str, Any] = {
         "name": name,
         "age": age,
         "stage": stage,
@@ -131,7 +133,7 @@ def main() -> None:
 
     life_stage: str = generate_profile(current_age)
 
-    user_profile: Dict[str, any] = generate_user_profile(
+    user_profile: Dict[str, Any] = generate_user_profile(
         user_name, current_age, life_stage, hobbies
     )
 

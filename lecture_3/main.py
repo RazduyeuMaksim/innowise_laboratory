@@ -1,6 +1,11 @@
-from typing import Optional, List, Union
+from typing import Optional, List, TypedDict
 
-StudentType = dict[str, Union[str, List[int]]]
+
+class StudentType(TypedDict):
+    name: str
+    grades: List[int]
+
+
 students: List[StudentType] = []
 
 
@@ -139,8 +144,10 @@ def add_grade() -> None:
                     continue
 
                 student: Optional[StudentType] = get_student_by_name(student_name)
-                student_grades: List[int] = student["grades"]
-                student_grades.append(student_grade)
+
+                if student is not None:
+                    student_grades: List[int] = student["grades"]
+                    student_grades.append(student_grade)
     else:
         print(f"Student {student_name} not found.")
 
@@ -162,14 +169,15 @@ def show_report() -> None:
         return
 
     for student in students:
-        average_value: Optional[float] = calculate_average(student)
+        avg: Optional[float] = calculate_average(student)
 
-        if average_value is not None:
-            average_list.append(round(average_value, 2))
+        if avg is not None:
+            average_list.append(round(avg, 2))
+            display_value = round(avg, 2)
         else:
-            average_value: str = "N/A"
+            display_value = "N/A"
 
-        print(f"{student['name']}'s average grade is {average_value}.")
+        print(f"{student['name']}'s average grade is {display_value}.")
 
     if average_list:
         print(f"--------------------------")
@@ -197,7 +205,7 @@ def top_performer() -> None:
         return
 
     top_student: StudentType = max(
-        student_with_grades, key=lambda student: calculate_average(student)
+        student_with_grades, key=lambda student: calculate_average(student) or 0
     )
 
     print(
