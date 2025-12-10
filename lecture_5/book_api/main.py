@@ -116,15 +116,14 @@ async def search_books(
 ):
     query = db.query(Book)
 
-    if any([book_title, book_author, book_year]):
-        if book_title:
-            query = query.filter(Book.title == book_title)
+    if book_title is not None:
+        query = query.filter(Book.title == book_title)
 
-        if book_author:
-            query = query.filter(Book.author == book_author)
+    if book_author is not None:
+        query = query.filter(Book.author == book_author)
 
-        if book_year:
-            query = query.filter(Book.year == book_year)
+    if book_year is not None:
+        query = query.filter(Book.year == book_year)
 
     books = query.all()
 

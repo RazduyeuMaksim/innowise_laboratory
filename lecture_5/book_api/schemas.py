@@ -24,7 +24,6 @@ class BookRequest(BaseModel):
         },
     )
     year: Optional[int] = Field(
-        gt=0,
         json_schema_extra={
             "title": "Publication Year",
             "description": "Publication year.",
@@ -54,7 +53,6 @@ class BookResponse(BaseModel):
         json_schema_extra={"example": "Author"},
     )
     year: Optional[int] = Field(
-        None,
         description="Publication year.",
         json_schema_extra={"example": 0},
     )
