@@ -9,17 +9,19 @@ class BookRequest(BaseModel):
         min_length=1,
         max_length=255,
         description="The title of the book.",
-        example="Title"
+        examples=["Title"]
     )
+
     author: str = Field(
         min_length=1,
         max_length=255,
         description="The author of the book.",
-        example="Author"
+        examples=["Author"]
     )
+
     year: Optional[int] = Field(
         description="Publication year.",
-        example=0
+        examples=[0]
     )
 
 
@@ -29,23 +31,26 @@ class BookRequest(BaseModel):
 class BookResponse(BaseModel):
     id: int = Field(
         description="Unique identifier of the book.",
-        example=1
+        examples=[1]
     )
+
     title: str = Field(
         min_length=1,
         max_length=255,
         description="The title of the book.",
-        example="Title"
+        examples=["Title"]
     )
+
     author: str = Field(
         min_length=1,
         max_length=255,
         description="The author of the book.",
-        example="Author"
+        examples=["Author"]
     )
+
     year: Optional[int] = Field(
         description="Publication year.",
-        example=0
+        examples=[0]
     )
 
     class Config:
