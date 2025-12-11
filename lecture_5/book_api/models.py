@@ -3,10 +3,10 @@ from sqlalchemy.orm import Mapped, mapped_column
 from database import Base
 
 
-"""
-Book model for SQLAlchemy with fields id, title, author, and year.
-"""
 class Book(Base):
+    """
+    Book model for SQLAlchemy with fields id, title, author, and year.
+    """
     __tablename__ = "books"
 
     id: Mapped[int] = mapped_column(Integer, primary_key=True)

@@ -6,26 +6,21 @@ from models import Book, Base
 from starlette import status
 from schemas import BookRequest, BookResponse
 
-"""
-FastAPI application instance
-"""
+# FastAPI application instance
 app = FastAPI()
 
-"""
-Create all database tables at startup
-"""
+# Create all database tables at startup
 Base.metadata.create_all(bind=engine)
 
-"""
-Dependency for SQLAlchemy session
-"""
+# Dependency for SQLAlchemy session
 db_dependency = Annotated[Session, Depends(get_db)]
 
-"""
-Add a new book to the database
-"""
+
 @app.post("/books/", response_model=BookResponse, status_code=status.HTTP_201_CREATED)
 async def add_new_book(db: db_dependency, book_request: BookRequest):
+    """
+    Add a new book to the database
+    """
     new_book = Book(**book_request.model_dump())
 
     try:
@@ -39,19 +34,19 @@ async def add_new_book(db: db_dependency, book_request: BookRequest):
     return new_book
 
 
-"""
-Get a list of all books
-"""
 @app.get("/books/", response_model=List[BookResponse], status_code=status.HTTP_200_OK)
 async def get_all_books(db: db_dependency):
+    """
+    Get a list of all books
+    """
     return db.query(Book).all()
 
 
-"""
-Delete a book by its ID
-"""
 @app.delete("/books/{book_id}", status_code=status.HTTP_204_NO_CONTENT)
 async def delete_book_by_id(db: db_dependency, book_id: int = Path(gt=0)):
+    """
+    Delete a book by its ID
+    """
     book_model = db.query(Book).filter(Book.id == book_id).first()
 
     if book_model is None:
@@ -67,19 +62,19 @@ async def delete_book_by_id(db: db_dependency, book_id: int = Path(gt=0)):
     return
 
 
-"""
-Update book information by ID
-"""
 @app.put(
-    "/books/{book_id}", 
-    response_model=BookResponse, 
+    "/books/{book_id}",
+    response_model=BookResponse,
     status_code=status.HTTP_200_OK
 )
 async def update_book_by_id(
-    db: db_dependency, 
-    book_request: BookRequest, 
-    book_id: int = Path(gt=0)
+        db: db_dependency,
+        book_request: BookRequest,
+        book_id: int = Path(gt=0)
 ):
+    """
+    Update book information by ID
+    """
     book_model = db.query(Book).filter(Book.id == book_id).first()
 
     if book_model is None:
@@ -100,20 +95,20 @@ async def update_book_by_id(
     return book_model
 
 
-"""
-Search books by title, author or year
-"""
 @app.get(
-    "/books/search/", 
-    response_model=List[BookResponse], 
+    "/books/search/",
+    response_model=List[BookResponse],
     status_code=status.HTTP_200_OK
 )
 async def search_books(
-    db: db_dependency,
-    book_title: Optional[str] = None,
-    book_author: Optional[str] = None,
-    book_year: Optional[int] = None,
+        db: db_dependency,
+        book_title: Optional[str] = None,
+        book_author: Optional[str] = None,
+        book_year: Optional[int] = None,
 ):
+    """
+    Search books by title, author or year
+    """
     query = db.query(Book)
 
     if book_title is not None:

@@ -1,10 +1,11 @@
 from pydantic import BaseModel, Field
 from typing import Optional
 
-"""
-Class for the request to create or update a book
-"""
+
 class BookRequest(BaseModel):
+    """
+    Class for the request to create or update a book
+    """
     title: str = Field(
         min_length=1,
         max_length=255,
@@ -25,10 +26,10 @@ class BookRequest(BaseModel):
     )
 
 
-"""
- Class for API response with book information
-"""
 class BookResponse(BaseModel):
+    """
+     Class for API response with book information
+    """
     id: int = Field(
         description="Unique identifier of the book.",
         examples=[1]
